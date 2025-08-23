@@ -1,0 +1,832 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Radical Road API",
+    "description": "Pokemon game API for battle management, player operations, and game functionality",
+    "contact": {
+      "name": "Radical Road Team"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Game",
+      "description": "Game testing and management"
+    },
+    {
+      "name": "Debug",
+      "description": "Debug and development endpoints"
+    },
+    {
+      "name": "Battle",
+      "description": "Battle management and command processing"
+    },
+    {
+      "name": "Player",
+      "description": "Player management operations"
+    },
+    {
+      "name": "Pokemon",
+      "description": "Pokemon resources and sprites"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "summary": "Test game functionality",
+        "description": "Runs a test battle between random AI players",
+        "operationId": "testGame",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/player/new": {
+      "post": {
+        "tags": [
+          "Player"
+        ],
+        "summary": "Create new player",
+        "description": "Create a new player account and return player key",
+        "operationId": "createNewPlayer",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Player name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/battle/new-vs-ai": {
+      "post": {
+        "tags": [
+          "Battle"
+        ],
+        "summary": "Open a new battle",
+        "description": "Start a new battle with one human player and one AI player",
+        "operationId": "getBattle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "description": "Unique human player key"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BattleFEDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/battle/force-action": {
+      "post": {
+        "tags": [
+          "Battle"
+        ],
+        "summary": "Push the battle's AI to act.",
+        "description": "Forces the AI to make its move and progress the battle state.",
+        "operationId": "progressBattle",
+        "parameters": [
+          {
+            "name": "battleId",
+            "in": "query",
+            "description": "Battle ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BattleFEDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/battle/command": {
+      "post": {
+        "tags": [
+          "Battle"
+        ],
+        "summary": "Process battle command",
+        "description": "Execute a player's battle command (move or switch) and return updated battle state",
+        "operationId": "processCommand",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayerCommandDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BattleFEDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pokemon/sprites/{pokemonKey}": {
+      "get": {
+        "tags": [
+          "Pokemon"
+        ],
+        "summary": "Get Pokemon sprite",
+        "description": "Retrieve PNG sprite image for a Pokemon species",
+        "operationId": "getSprite",
+        "parameters": [
+          {
+            "name": "pokemonKey",
+            "in": "path",
+            "description": "Pokemon species key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/debug/species": {
+      "get": {
+        "tags": [
+          "Debug"
+        ],
+        "summary": "List all species",
+        "description": "Get a plain text list of all Pokemon species in the system",
+        "operationId": "showAllSpecies",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/debug/load-species": {
+      "get": {
+        "tags": [
+          "Debug"
+        ],
+        "summary": "Load species data",
+        "description": "Trigger loading of Pokemon species data from files",
+        "operationId": "testLoadSpecies",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/battle/info": {
+      "get": {
+        "tags": [
+          "Battle"
+        ],
+        "summary": "Get battle information",
+        "description": "Retrieve battle state and information for a specific player",
+        "operationId": "getBattle_1",
+        "parameters": [
+          {
+            "name": "battleId",
+            "in": "query",
+            "description": "Battle ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "playerKey",
+            "in": "query",
+            "description": "Unique player key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BattleFEDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BattleFEDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "STARTED",
+              "PROCESSING",
+              "WAITING_FOR_INPUT_MOVES",
+              "WAITING_FOR_INPUT_REPLACE_POKEMON",
+              "WON",
+              "LOST"
+            ]
+          },
+          "playerA": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "playerB": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "playerTeam": {
+            "$ref": "#/components/schemas/BattleTeamDto"
+          },
+          "turn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activePokemonPlayer": {
+            "$ref": "#/components/schemas/PokemonBattleInstanceDto"
+          },
+          "activePokemonOpponent": {
+            "$ref": "#/components/schemas/PokemonBattleInstanceDto"
+          },
+          "submittedCommand": {
+            "$ref": "#/components/schemas/IBattleCommand"
+          },
+          "logs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BattleLogEntryDto"
+            }
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BattleLogEntryDto": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "message": {
+            "type": "string"
+          },
+          "player": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "pokemon": {
+            "$ref": "#/components/schemas/PokemonBattleInstanceDto"
+          }
+        }
+      },
+      "BattleTeamDto": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "pokemon": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PokemonBattleInstanceDto"
+            }
+          }
+        }
+      },
+      "IBattleCommand": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "originSlot": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "IPlayer": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "IPrimaryStatus": {
+        "type": "object"
+      },
+      "MoveBattleDto": {
+        "type": "object",
+        "properties": {
+          "move": {
+            "$ref": "#/components/schemas/MoveDataDto"
+          },
+          "currentPp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxPp": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "MoveDataDto": {
+        "type": "object",
+        "properties": {
+          "implemented": {
+            "type": "boolean"
+          },
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GRASS",
+                "POISON",
+                "FIRE",
+                "WATER",
+                "BUG",
+                "FLYING",
+                "NORMAL",
+                "ELECTRIC",
+                "GROUND",
+                "FAIRY",
+                "FIGHTING",
+                "PSYCHIC",
+                "ROCK",
+                "GHOST",
+                "ICE",
+                "DRAGON",
+                "DARK",
+                "STEEL"
+              ]
+            }
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "PHYSICAL",
+              "SPECIAL",
+              "STATUS"
+            ]
+          },
+          "power": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accuracy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string",
+            "enum": [
+              "SELF",
+              "ENEMY_ADJACENT",
+              "ENEMY_ALL",
+              "ENEMY_ANY",
+              "ALLY",
+              "ALLY_AND_SELF",
+              "EVERYONE",
+              "NONE"
+            ]
+          },
+          "effect": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoveEffectDto"
+            }
+          }
+        }
+      },
+      "MoveEffectDto": {
+        "type": "object",
+        "properties": {
+          "effect": {
+            "type": "string",
+            "enum": [
+              "STATUS",
+              "ALWAYS_HITS",
+              "FLINCH"
+            ]
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PokemonBattleInstanceDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "currentHp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxHp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "luck": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ability": {
+            "type": "string"
+          },
+          "statValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "moves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoveBattleDto"
+            }
+          },
+          "alive": {
+            "type": "boolean"
+          },
+          "primaryStatus": {
+            "$ref": "#/components/schemas/IPrimaryStatus"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GRASS",
+                "POISON",
+                "FIRE",
+                "WATER",
+                "BUG",
+                "FLYING",
+                "NORMAL",
+                "ELECTRIC",
+                "GROUND",
+                "FAIRY",
+                "FIGHTING",
+                "PSYCHIC",
+                "ROCK",
+                "GHOST",
+                "ICE",
+                "DRAGON",
+                "DARK",
+                "STEEL"
+              ]
+            }
+          },
+          "pokemon": {
+            "$ref": "#/components/schemas/PokemonInstanceDto"
+          },
+          "owner": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RandomAIPlayer"
+              }
+            ]
+          },
+          "flinched": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PokemonInstanceDto": {
+        "type": "object",
+        "properties": {
+          "species": {
+            "$ref": "#/components/schemas/SpeciesDataDto"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "learnedMoves": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoveDataDto"
+            }
+          },
+          "ability": {
+            "type": "string"
+          },
+          "baseStatValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "availableLevelUpMoveKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "toLevel": {
+            "type": "integer",
+            "format": "int32",
+            "writeOnly": true
+          }
+        }
+      },
+      "RandomAIPlayer": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/IPlayer"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "level": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "preferredType": {
+                "type": "string",
+                "enum": [
+                  "GRASS",
+                  "POISON",
+                  "FIRE",
+                  "WATER",
+                  "BUG",
+                  "FLYING",
+                  "NORMAL",
+                  "ELECTRIC",
+                  "GROUND",
+                  "FAIRY",
+                  "FIGHTING",
+                  "PSYCHIC",
+                  "ROCK",
+                  "GHOST",
+                  "ICE",
+                  "DRAGON",
+                  "DARK",
+                  "STEEL"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "SpeciesDataDto": {
+        "type": "object",
+        "properties": {
+          "implemented": {
+            "type": "boolean"
+          },
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "GRASS",
+                "POISON",
+                "FIRE",
+                "WATER",
+                "BUG",
+                "FLYING",
+                "NORMAL",
+                "ELECTRIC",
+                "GROUND",
+                "FAIRY",
+                "FIGHTING",
+                "PSYCHIC",
+                "ROCK",
+                "GHOST",
+                "ICE",
+                "DRAGON",
+                "DARK",
+                "STEEL"
+              ]
+            }
+          },
+          "form": {
+            "type": "string"
+          },
+          "baseStats": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "abilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "levelUpMoves": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "eggMoves": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tmMoves": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tutorMoves": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PlayerCommandDto": {
+        "type": "object",
+        "properties": {
+          "battleId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "playerKey": {
+            "type": "string"
+          },
+          "commandType": {
+            "type": "string"
+          },
+          "pokemonKey": {
+            "type": "string"
+          },
+          "moveKey": {
+            "type": "string"
+          },
+          "targetSlot": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "originSlot": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "description": "Player command (move or switch)"
+      }
+    }
+  }
+}

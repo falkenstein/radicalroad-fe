@@ -1,0 +1,103 @@
+.move-selector {
+  text-align: center;
+}
+
+.move-selector h3 {
+  margin: 0 0 1rem 0;
+  color: white;
+}
+
+.moves-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.move-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #74b9ff;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.move-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background: white;
+}
+
+.move-button:active {
+  transform: translateY(0);
+}
+
+.move-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #ddd;
+}
+
+.move-button:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.move-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.move-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.move-type {
+  background: #636e72;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.move-power {
+  font-weight: bold;
+  color: #e17055;
+}
+
+.move-pp {
+  font-size: 0.8rem;
+  color: #636e72;
+}
+
+.move-button.fire .move-type { background: #F08030; }
+.move-button.water .move-type { background: #6890F0; }
+.move-button.electric .move-type { background: #F8D030; color: #333; }
+.move-button.grass .move-type { background: #78C850; }
+.move-button.ice .move-type { background: #98D8D8; color: #333; }
+.move-button.fighting .move-type { background: #C03028; }
+.move-button.poison .move-type { background: #A040A0; }
+.move-button.ground .move-type { background: #E0C068; color: #333; }
+.move-button.flying .move-type { background: #A890F0; }
+.move-button.psychic .move-type { background: #F85888; }
+.move-button.bug .move-type { background: #A8B820; }
+.move-button.rock .move-type { background: #B8A038; }
+.move-button.ghost .move-type { background: #705898; }
+.move-button.dragon .move-type { background: #7038F8; }
+.move-button.dark .move-type { background: #705848; }
+.move-button.steel .move-type { background: #B8B8D0; color: #333; }
+.move-button.fairy .move-type { background: #EE99AC; }
+.move-button.normal .move-type { background: #A8A878; }

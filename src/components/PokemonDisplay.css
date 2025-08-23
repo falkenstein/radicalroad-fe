@@ -1,0 +1,123 @@
+.pokemon-display {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pokemon-display.opponent {
+  flex-direction: row;
+}
+
+.pokemon-display.player {
+  flex-direction: row-reverse;
+}
+
+.pokemon-info {
+  flex: 1;
+}
+
+.pokemon-name-level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.pokemon-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+.pokemon-level {
+  font-size: 1rem;
+  color: #636e72;
+}
+
+.pokemon-types {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.type-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+.type-badge.normal { background: #A8A878; }
+.type-badge.fire { background: #F08030; }
+.type-badge.water { background: #6890F0; }
+.type-badge.electric { background: #F8D030; }
+.type-badge.grass { background: #78C850; }
+.type-badge.ice { background: #98D8D8; }
+.type-badge.fighting { background: #C03028; }
+.type-badge.poison { background: #A040A0; }
+.type-badge.ground { background: #E0C068; }
+.type-badge.flying { background: #A890F0; }
+.type-badge.psychic { background: #F85888; }
+.type-badge.bug { background: #A8B820; }
+.type-badge.rock { background: #B8A038; }
+.type-badge.ghost { background: #705898; }
+.type-badge.dragon { background: #7038F8; }
+.type-badge.dark { background: #705848; }
+.type-badge.steel { background: #B8B8D0; }
+.type-badge.fairy { background: #EE99AC; }
+
+.hp-bar-container {
+  margin-top: 0.5rem;
+}
+
+.hp-text {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: #636e72;
+}
+
+.hp-bar {
+  width: 100%;
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.pokemon-sprite {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sprite-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+}
+
+.sprite-placeholder.opponent-sprite {
+  background: linear-gradient(135deg, #e17055, #fd79a8);
+}
