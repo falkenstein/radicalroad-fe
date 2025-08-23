@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PokemonBattleInstanceDto } from '../types/api';
+import { apiService } from '../services/api';
 import './PokemonSelector.css';
 
 interface PokemonSelectorProps {
@@ -8,7 +9,12 @@ interface PokemonSelectorProps {
 }
 
 const PokemonSelector: React.FC<PokemonSelectorProps> = ({ pokemon, onPokemonSelect }) => {
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const alivePokemon = pokemon.filter(p => p.alive);
+
+  const handleImageError = (pokemonKey: string) => {
+    setImageErrors(prev => ({ ...prev, [pokemonKey]: true }));
+  };
 
   return (
     <div className="pokemon-selector">
@@ -20,6 +26,20 @@ const PokemonSelector: React.FC<PokemonSelectorProps> = ({ pokemon, onPokemonSel
             className="pokemon-card"
             onClick={() => onPokemonSelect(poke.key)}
           >
+            <div className="pokemon-sprite-small">
+              {!imageErrors[poke.key] ? (
+                <img 
+                  src={apiService.getSpriteUrl(poke.pokemon.species.key)}
+                  alt={poke.pokemon.species.name}
+                  className="sprite-image-small"
+                  onError={() => handleImageError(poke.key)}
+                />
+              ) : (
+                <div className="sprite-placeholder-small">
+                  {poke.pokemon.species.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
             <div className="pokemon-name">{poke.pokemon.species.name}</div>
             <div className="pokemon-level">Level {poke.pokemon.level}</div>
             <div className="pokemon-hp">

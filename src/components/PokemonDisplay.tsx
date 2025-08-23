@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PokemonBattleInstanceDto } from '../types/api';
+import { apiService } from '../services/api';
 import './PokemonDisplay.css';
 
 interface PokemonDisplayProps {
@@ -8,7 +9,9 @@ interface PokemonDisplayProps {
 }
 
 const PokemonDisplay: React.FC<PokemonDisplayProps> = ({ pokemon, isOpponent }) => {
+  const [imageError, setImageError] = useState(false);
   const hpPercentage = (pokemon.currentHp / pokemon.maxHp) * 100;
+  const spriteUrl = apiService.getSpriteUrl(pokemon.pokemon.species.key);
 
   return (
     <div className={`pokemon-display ${isOpponent ? 'opponent' : 'player'}`}>
@@ -43,9 +46,18 @@ const PokemonDisplay: React.FC<PokemonDisplayProps> = ({ pokemon, isOpponent }) 
       </div>
       
       <div className="pokemon-sprite">
-        <div className={`sprite-placeholder ${isOpponent ? 'opponent-sprite' : 'player-sprite'}`}>
-          {pokemon.pokemon.species.name.charAt(0).toUpperCase()}
-        </div>
+        {!imageError ? (
+          <img 
+            src={spriteUrl}
+            alt={pokemon.pokemon.species.name}
+            className={`sprite-image ${isOpponent ? 'opponent-sprite' : 'player-sprite'}`}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className={`sprite-placeholder ${isOpponent ? 'opponent-sprite' : 'player-sprite'}`}>
+            {pokemon.pokemon.species.name.charAt(0).toUpperCase()}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -91,6 +91,10 @@ class ApiService {
 
     return response.json();
   }
+
+  getSpriteUrl(pokemonKey: string): string {
+    return `${BASE_URL}/pokemon/sprites/${encodeURIComponent(pokemonKey)}`;
+  }
 }
 
 export const apiService = new ApiService();
