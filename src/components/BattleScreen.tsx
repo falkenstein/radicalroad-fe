@@ -5,21 +5,19 @@ import PokemonDisplay from './PokemonDisplay';
 import MoveSelector from './MoveSelector';
 import PokemonSelector from './PokemonSelector';
 import BattleResult from './BattleResult';
+import BattleConfiguration from './BattleConfiguration';
 import './BattleScreen.css';
 
 const BattleScreen: React.FC = () => {
   const [battle, setBattle] = useState<BattleFEDto | null>(null);
   const [playerKey, setPlayerKey] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showConfiguration, setShowConfiguration] = useState<boolean>(true);
   const initializationRef = useRef<boolean>(false);
 
   useEffect(() => {
-    if (!initializationRef.current) {
-      initializationRef.current = true;
-      initializeBattle();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Remove automatic initialization on component mount
   }, []);
 
   useEffect(() => {
@@ -29,18 +27,20 @@ const BattleScreen: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [battle?.state]);
 
-  const initializeBattle = async () => {
+  const initializeBattle = async (level: number) => {
     try {
       setLoading(true);
       setError(null);
+      setShowConfiguration(false);
 
       const playerKeyResponse = await apiService.createPlayer('Player');
       setPlayerKey(playerKeyResponse);
       
-      const battleResponse = await apiService.createBattle(playerKeyResponse);
+      const battleResponse = await apiService.createBattle(playerKeyResponse, level);
       setBattle(battleResponse);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to initialize battle');
+      setShowConfiguration(true);
     } finally {
       setLoading(false);
     }
@@ -118,8 +118,15 @@ const BattleScreen: React.FC = () => {
 
   const handleNewBattle = () => {
     initializationRef.current = false;
-    initializeBattle();
+    setShowConfiguration(true);
+    setBattle(null);
+    setPlayerKey(null);
+    setError(null);
   };
+
+  if (showConfiguration) {
+    return <BattleConfiguration onStartBattle={initializeBattle} loading={loading} />;
+  }
 
   if (loading) {
     return <div className="battle-screen loading">Loading battle...</div>;
@@ -129,7 +136,7 @@ const BattleScreen: React.FC = () => {
     return (
       <div className="battle-screen error">
         <div>Error: {error}</div>
-        <button onClick={handleNewBattle}>Retry</button>
+        <button onClick={handleNewBattle}>Back to Configuration</button>
       </div>
     );
   }

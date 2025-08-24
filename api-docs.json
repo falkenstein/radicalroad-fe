@@ -97,8 +97,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
-                "description": "Unique human player key"
+                "type": "object",
+                "properties": {
+                  "playerKey": {
+                    "type": "string",
+                    "description": "Unique human player key"
+                  },
+                  "level": {
+                    "type": "integer",
+                    "description": "Battle level",
+                    "format": "int32"
+                  }
+                }
               }
             }
           },

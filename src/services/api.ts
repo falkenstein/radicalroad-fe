@@ -39,10 +39,10 @@ class ApiService {
     return response.text();
   }
 
-  async createBattle(playerKey: string): Promise<BattleFEDto> {
+  async createBattle(playerKey: string, level: number = 10): Promise<BattleFEDto> {
     return this.request<BattleFEDto>('/battle/new-vs-ai', {
       method: 'POST',
-      body: JSON.stringify(playerKey),
+      body: JSON.stringify({ playerKey, level }),
     });
   }
 
