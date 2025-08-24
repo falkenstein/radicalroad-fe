@@ -132,3 +132,94 @@
 .sprite-placeholder.opponent-sprite {
   background: linear-gradient(135deg, #e17055, #fd79a8);
 }
+
+.status-indicator {
+  margin-top: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.status-badge.burned {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  animation: burnPulse 2s infinite;
+}
+
+.status-badge.frostbitten {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  animation: frostShine 3s infinite;
+}
+
+.status-badge.paralyzed {
+  background: linear-gradient(135deg, #f1c40f, #f39c12);
+  animation: paralyzeFlicker 1.5s infinite;
+}
+
+.status-badge.poisoned {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  animation: poisonBubble 2.5s infinite;
+}
+
+.status-badge.asleep {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  animation: sleepBreath 3s infinite ease-in-out;
+}
+
+@keyframes burnPulse {
+  0%, 100% { 
+    opacity: 1; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  50% { 
+    opacity: 0.8; 
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+  }
+}
+
+@keyframes frostShine {
+  0%, 100% { 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  50% { 
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+}
+
+@keyframes paralyzeFlicker {
+  0%, 90%, 100% { 
+    opacity: 1;
+  }
+  45% { 
+    opacity: 0.6;
+  }
+}
+
+@keyframes poisonBubble {
+  0%, 100% { 
+    transform: scale(1);
+  }
+  50% { 
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sleepBreath {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}

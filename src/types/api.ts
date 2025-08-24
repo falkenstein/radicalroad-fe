@@ -3,6 +3,11 @@ export interface IPlayer {
   key: string;
 }
 
+export interface IPrimaryStatus {
+  description: string;
+  type: 'BURNED' | 'FROSTBITTEN' | 'PARALYZED' | 'POISONED' | 'ASLEEP';
+}
+
 export interface MoveDataDto {
   implemented: boolean;
   key: string;
@@ -46,6 +51,7 @@ export interface PokemonBattleInstanceDto {
   types: string[];
   pokemon: PokemonInstanceDto;
   owner: IPlayer;
+  primaryStatus?: IPrimaryStatus;
 }
 
 export interface BattleLogEntryDto {

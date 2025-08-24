@@ -43,6 +43,14 @@ const PokemonDisplay: React.FC<PokemonDisplayProps> = ({ pokemon, isOpponent }) 
             />
           </div>
         </div>
+        
+        {pokemon.primaryStatus && (
+          <div className="status-indicator">
+            <span className={`status-badge ${pokemon.primaryStatus.type.toLowerCase()}`}>
+              {pokemon.primaryStatus.type}
+            </span>
+          </div>
+        )}
       </div>
       
       <div className="pokemon-sprite">
